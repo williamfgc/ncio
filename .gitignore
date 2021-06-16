@@ -56,4 +56,6 @@ CMakeSettings.json
 subprojects/doctest
 subprojects/ncio-data
 subprojects/nlohmann_json
+subprojects/pybind11-2.6.1
+subprojects/packagecache
 

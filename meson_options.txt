@@ -6,3 +6,5 @@ option('build-tests', type : 'boolean', value : true)
 option('build-tests-regression', type : 'boolean', value : false)
 # options to build application specific schemas
 option('NCIO_USE_SCHEMA_NEXUS', type : 'boolean', value : true)
+# options to build specific bindings
+option('NCIO_USE_Python', type : 'boolean', value : true)
