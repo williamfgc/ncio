@@ -15,13 +15,34 @@ DataDescriptor::operator bool() const noexcept
     return m_ImplDataDescriptor != nullptr ? true : false;
 }
 
-void DataDescriptor::Execute(const int threadID) {}
-
-std::future<void> DataDescriptor::ExecuteAsync(const std::launch mode,
-                                               const int threadID)
+void DataDescriptor::Put(const std::string &entryName,
+                         const pybind11::array &data,
+                         const Dimensions &dimensions, const int threadID)
 {
-    CheckImpl("ExecuteAsync");
-    return m_ImplDataDescriptor->ExecuteAsync(mode, threadID);
+    CheckImpl("Put");
+    // TODO loop to find type of data.data()
+    // m_ImplDataDescriptor->Put(entryName, data.data(), dimensions,
+    //                                 threadID);
+}
+
+void DataDescriptor::Get(const std::string &entryName, pybind11::array &data,
+                         const Box &box, const int threadID)
+{
+    CheckImpl("Get");
+    // TODO loop to find type of data.data()
+    // m_ImplDataDescriptor->Get(entryName, data.data(), box, threadID);
+}
+
+Shape DataDescriptor::GetShape(const std::string &entryName) const
+{
+    CheckImpl("GetShape");
+    return m_ImplDataDescriptor->GetShape(entryName);
+}
+
+void DataDescriptor::Execute(const int threadID)
+{
+    CheckImpl("Execute");
+    return m_ImplDataDescriptor->Execute(threadID);
 }
 
 void DataDescriptor::Close()
@@ -31,6 +52,7 @@ void DataDescriptor::Close()
     m_ImplDataDescriptor = nullptr;
 }
 
+// PRIVATE
 DataDescriptor::DataDescriptor(core::DataDescriptor &implDataDescriptor)
 : m_ImplDataDescriptor(&implDataDescriptor)
 {
@@ -41,7 +63,8 @@ void DataDescriptor::CheckImpl(const std::string &functionName) const
     if (!*this)
     {
         throw std::logic_error(
-            "ncio ERROR: invalid DataDescriptor object in call to " +
+            "ncio ERROR: Python bindings invalid DataDescriptor object in call "
+            "to " +
             functionName +
             ". Please modify your code and pass a valid DataDescriptor created "
             "with NCIO::open that has not been previously closed\n");

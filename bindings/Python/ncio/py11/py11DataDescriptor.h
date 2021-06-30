@@ -33,23 +33,19 @@ public:
 
     explicit operator bool() const noexcept;
 
-    template <auto entry>
-    void Put(const pybind11::array &data, const Dimensions &dimensions,
-             const int threadID = 0);
+    void Put(const std::string &entryName, const pybind11::array &data,
+             const Dimensions &dimensions, const int threadID = 0);
 
-    template <auto entry, class T>
-    void Get(pybind11::array &data, const Box &box, const int threadID = 0);
+    void Get(const std::string &entryName, pybind11::array &data,
+             const Box &box, const int threadID = 0);
 
-    template <auto entry>
-    Shape GetShape() const;
+    Shape GetShape(const std::string &entryName) const;
 
+    // here be explicit about indices?
     template <auto indexModel, class T>
     T GetMetadata(const Parameters &parameters = Parameters());
 
     void Execute(const int threadID = 0);
-
-    std::future<void> ExecuteAsync(const std::launch mode,
-                                   const int threadID = 0);
 
     void Close();
 
